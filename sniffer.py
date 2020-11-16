@@ -1,4 +1,5 @@
 from scapy.all import *
+import datetime
 
 packet_ips = []
 rules = []
@@ -29,20 +30,27 @@ def check(s_ip, d_ip, s_port, d_port):
         #SOURCE IP
         if rule[0] == "*" or rule[0] == s_ip:
 	    #SOURCE PORT
-            if rule[1] == "*" or rule[1] == s_port:
+            if rule[1] == "*" or rule[1] == s_port or s_port is not None:
 	        #DESTINATION IP
                 if rule[2] == "*" or rule[2] == d_ip:
 		    #DESTINATION IP
-                    if rule[3] == "*" or rule[3] == d_port:
+                    if rule[3] == "*" or rule[3] == d_port or d_port is not None:
                         suspicious = True
     return suspicious
 
 def consider(packet):
     src_ip = packet[0][1].src
     dst_ip = packet[0][1].dst
-    s_port = packet.sport
-    d_port = packet.dport
-    string = "============sniffer.py============\n"
+    try:
+        s_port = packet.sport
+    except AttributeError:
+        s_port = "ICMP"
+    try:
+        d_port = packet.dport
+    except AttributeError:
+        d_port = "ICMP"
+    string = "===============sniffer.py==============\n"
+    string = string + "Time: " + str(datetime.datetime.now()) + "\n"
     string = string + "Source IP: " + src_ip + " - Source Port: " + str(s_port) + "\n"
     string = string + "Destination IP: " + dst_ip + " - Destination Port: " + str(d_port) + "\n"
     if (check(src_ip, dst_ip, str(s_port), str(d_port))):
