@@ -6,7 +6,7 @@ import datetime
 hostip = "0.0.0.0"
 #hostname = socket.gethostname()
 #hostip = socket.gethostbyname(hostname)
-port = 22 #int(sys.argv[1])
+port = int(sys.argv[1])
 print(hostip)
 print(port)
 
