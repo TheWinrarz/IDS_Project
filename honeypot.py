@@ -1,14 +1,18 @@
 import socket
 import sys
 import datetime
-host = '127.0.0.1'
-port = int(sys.argv[1])
 
+
+hostip = "0.0.0.0"
+#hostname = socket.gethostname()
+#hostip = socket.gethostbyname(hostname)
+port = 22 #int(sys.argv[1])
+print(hostip)
 print(port)
 
 
 with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.bind((host, port))
+    s.bind((hostip, port))
     while True:
         s.listen()
         conn, addr = s.accept()
